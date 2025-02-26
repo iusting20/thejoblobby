@@ -15,7 +15,7 @@ class BookingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_booking');
+        return $user->can('view_any_booking') || $user->hasRole('Patient');
     }
 
     /**
@@ -23,7 +23,7 @@ class BookingPolicy
      */
     public function view(User $user, Booking $booking): bool
     {
-        return $user->can('view_booking');
+        return $user->can('view_booking') || $user->hasRole('Patient');
     }
 
     /**
@@ -31,7 +31,7 @@ class BookingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_booking');
+        return $user->can('create_booking') || $user->hasRole('Patient');
     }
 
     /**

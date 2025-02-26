@@ -58,6 +58,10 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                'panels::user-menu.before',
+                fn () => view('filament.hooks.user-role-badge'),
+            );
     }
 }

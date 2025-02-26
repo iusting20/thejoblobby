@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -116,5 +117,18 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        
+        // Hide UserResource from Patient users
+        if ($user && $user->hasRole('Patient')) {
+            return false;
+        }
+        
+        return true;
     }
 }
