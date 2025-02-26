@@ -4,8 +4,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ url('/') }}" class="text-[#FF2D20] text-2xl font-bold">
-                        {{ config('app.name', 'The Job Lobby') }}
+                    <a href="{{ url('/') }}">
+                        <img src="{{ asset('images/Logo_White-min.png') }}" alt="{{ config('app.name', 'The Job Lobby') }}" class="h-8 w-auto dark:invert">
                     </a>
                 </div>
                 
