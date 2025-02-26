@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -113,11 +114,26 @@ class RoleResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn ($record) => $record->name !== 'super_admin'),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn ($record) => $record->name !== 'super_admin'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->before(function (Tables\Actions\DeleteBulkAction $action) {
+                        // Prevent bulk deletion if super_admin is included
+                        $action->getRecords()->each(function ($record) use ($action) {
+                            if ($record->name === 'super_admin') {
+                                $action->cancel();
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Protected Role')
+                                    ->body('The super_admin role cannot be deleted.')
+                                    ->send();
+                            }
+                        });
+                    }),
             ]);
     }
 
