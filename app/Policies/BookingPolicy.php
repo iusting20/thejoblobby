@@ -15,7 +15,7 @@ class BookingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('view_any_booking');
     }
 
     /**
@@ -23,7 +23,7 @@ class BookingPolicy
      */
     public function view(User $user, Booking $booking): bool
     {
-        return true;
+        return $user->can('view_booking');
     }
 
     /**
