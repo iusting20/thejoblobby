@@ -21,10 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(function ($user, $ability) {
-            if ($user->hasRole(Config::get('filament-shield.super_admin.name'))) {
-            return true;
-            }
-        });
+        //
     }
 }
